@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Bloc Pong by Dan</title>
+    <title>Bloc Pong by Kevin</title>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
 
@@ -10,11 +10,11 @@
     <div>
         <div id='directions'>
             <h1>Welcome to Bloc Pong!</h1>
-            <h2>Bloc Pong is a replica of the classic pong arcade game</h2>
-            <br>
             <p>The rules are simple. Try to deflect the ball to your opponent and make them miss. The player with the most points wins!</p>
         </div>
-        <canvas id="pongTable" width="850" height="550"></canvas>
+        <h2 id="playerScoreDisplay"></h2>
+        <h2 id="computerScoreDisplay"></h2>
+        <canvas id="pongTable"></canvas>
     </div>
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="scripts/pong.js"></script>

@@ -1,14 +1,34 @@
 $(document).ready(function() {
     var pongTable = document.getElementById("pongTable");
     var pongTableContext = pongTable.getContext("2d");
+    var playerScore = 0;
+    var computerScore = 0;
+    var playerScoreDisplay = document.getElementById("playerScoreDisplay");
+    var playerScoreDisplay = document.getElementById("playerScoreDisplay");
 
+    //continuosly render gameplay
+    var animate = window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame  ||
+        window.mozRequestAnimationFrame     ||
+        window.oRequestAnimationFrame       ||
+        window.msRequestAnimationFrame      ||
+    function(callback)  { window.setTimeout(callback, 1000/60) };
+
+    var pongTable = document.getElementById('pongTable');
+    var width = 850;
+    var height = 550;
+    pongTable.width = width;
+    pongTable.height = height;
+    var context = pongTable.getContext('2d');
+    
     // create paddles
     var Paddle = function(x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = 0;
+        this.speedX = 0;
+        this.speedY = 0;
     };
 
     Paddle.prototype.render = function() {
@@ -20,8 +40,8 @@ $(document).ready(function() {
         this.y +=this.speed;
         if (this.y < 0) {
             this.y = 0
-        } else if (this.y > 400) {
-            this.y = 400
+        } else if (this.y > 450) {
+            this.y = 550
         }
     };
 
@@ -29,12 +49,12 @@ $(document).ready(function() {
         this.paddle = paddle;
     };
 
-    Player.prototype.render = function() {
-        this.paddle.render()
-    };
-
     var Computer = function(paddle) {
         this.paddle = paddle;
+    };
+
+    Player.prototype.render = function() {
+        this.paddle.render()
     };
 
     Computer.prototype.render = function() {
@@ -53,14 +73,6 @@ $(document).ready(function() {
 
         this.paddle.move(this.speed);
     };
-
-    //continuosly render gameplay
-    var animate = window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame  ||
-    window.mozRequestAnimationFrame     ||
-    window.oRequestAnimationFrame       ||
-    window.msRequestAnimationFrame      ||
-    function(callback)  { window.setTimeout(callback, 1000/60) };
 
     // create ball
     var Ball = function() {
@@ -97,8 +109,12 @@ $(document).ready(function() {
 
         // Points scored for collision against the wall
         if (this.x < 10) {
+            playerScore++;
+            playerScoreDisplay.innerHTML = "Player Score: " + playerScore;
             resetBall(this)
         } else if (this.x > 850) {
+            computerScore++;
+            computerScoreDisplay.innerHTML = "Computer Score: " + computerScore;
             resetBall(this)
         }
 
@@ -140,7 +156,7 @@ $(document).ready(function() {
     // Construct the three elements by creating new objects from the constructors: player,  computer, and ball
 
     var player = new Player(
-        new Paddle(600, 200, 10, 80)
+        new Paddle(830, 200, 10, 80)
     );
 
     var computer = new Computer(
@@ -160,6 +176,8 @@ $(document).ready(function() {
     }
 
     step();
+    computerScoreDisplay.innerHTML = "Computer score: " + computerScore;
+    playerScoreDisplay.innerHTML = "Player Score: " + playerScore;
 
     window.addEventListener('keydown', function(event) {
         if (event.keyCode ===38) {
