@@ -3,8 +3,10 @@ $(document).ready(function() {
     var pongTableContext = pongTable.getContext("2d");
     var playerScore = 0;
     var computerScore = 0;
+    var endGameScore = 11;
+    
     var playerScoreDisplay = document.getElementById("playerScoreDisplay");
-    var playerScoreDisplay = document.getElementById("playerScoreDisplay");
+    var computerScoreDisplay = document.getElementById("computerScoreDisplay");
 
     //continuosly render gameplay
     var animate = window.requestAnimationFrame ||
@@ -165,17 +167,34 @@ $(document).ready(function() {
 
     var ball = new Ball();
 
+    function displayMessage() {
+        if (computerScore === endGameScore) {
+            pongTableContext.font = 'bold 35pt Helvetica';
+            pongTableContext.fillText('You Lost', 320, 200);
+            pongTableContext.font = 'bold 20pt Helvetica';
+            pongTableContext.fillText('Want to play again?  Refresh the page to start a new game.', 70, 330);
+        } else if (computerScore === endGameScore) {
+            pongTableContext.font = 'bold 35pt Helvetica';
+            pongTableContext.fillText('You Won', 320, 200);
+            pongTableContext.font = 'bold 20pt Helvetica';
+            pongTableContext.fillText('Want to play again?  Refresh the page to start a new game.', 70, 330);
+        }
+    }
+
     function step() {
         pongTableContext.clearRect(0, 0, 850, 550);
-        ball.move();
-        computer.update();
+        displayMessage();
         player.render();
         computer.render();
         ball.render();
-        animate(step);
+        if (computerScore < endGameScore && playerScore < endGameScore) {
+            ball.move ();
+            computer.update();
+            animate(step);
+        }
     }
 
-    step();
+    animate(step);
     computerScoreDisplay.innerHTML = "Computer score: " + computerScore;
     playerScoreDisplay.innerHTML = "Player Score: " + playerScore;
 
